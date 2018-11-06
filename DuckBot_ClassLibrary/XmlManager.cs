@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace DuckBot_ClassLibrary
 {
-    public static class XmlManager
+    public class XmlManager
     {
         public static bool NewLineOnAttributes { get; set; }
         /// <summary>
