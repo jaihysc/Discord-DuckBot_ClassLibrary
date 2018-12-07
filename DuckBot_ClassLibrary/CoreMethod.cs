@@ -8,7 +8,7 @@ namespace DuckBot_ClassLibrary
 {
     public class CoreMethod
     {
-        //<This must be set prior to using the methods in this class>
+        //This must be set prior to using the methods in this class
         internal static string rootLocation = "";
         internal static bool rootLocationSet = false;
 
@@ -21,7 +21,7 @@ namespace DuckBot_ClassLibrary
         {
             throw new Exception("Paths file root location was not set");
         }
-        //</>
+        //
 
         public static List<string> ReadFromFileToList(string fileName)
         {

@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace DuckBot_ClassLibrary
+namespace DuckBot_ClassLibrary.Modules
 {
     public class XmlManager
     {
@@ -62,9 +62,9 @@ namespace DuckBot_ClassLibrary
             }
         }
 
-        /// <summary>
-        /// Serializes an object to an XML file.
-        /// </summary>
+        ///<summary>
+        ///Serializes an object to an XML file.
+        ///</summary>
         public static void ToXmlFile(Object obj, string filePath)
         {
             var xs = new XmlSerializer(obj.GetType());
