@@ -106,37 +106,47 @@ namespace DuckBot_ClassLibrary.Modules
             int userSkinsProcessedSinceLastPage = 0;
             int counter = 0;
 
-            for (int i = 0; i < embedField1Master.Count(); i++)
+            //Add count of 2 fields together and divide by 2, in case the fields are ever uneven
+            for (int i = 0; i < (embedField1Master.Count() + embedField2Master.Count()) / 2; i++)
             {
-                //Create a new page and reset counter if reached 20
-                if (userSkinsProcessedSinceLastPage == entriesPerPage)
+                try
                 {
-                    //Add page
-                    CreateNewPaginatorPage(embedField1, embedField2, pages, paginationConfig);
+                    //Create a new page and reset counter if reached 20
+                    if (userSkinsProcessedSinceLastPage == entriesPerPage)
+                    {
+                        //Add page
+                        CreateNewPaginatorPage(embedField1, embedField2, pages, paginationConfig);
 
-                    //Counter reset
-                    userSkinsProcessedSinceLastPage = 0;
+                        //Counter reset
+                        userSkinsProcessedSinceLastPage = 0;
 
-                    //Reset fields
-                    embedField1 = new List<string>();
-                    embedField2 = new List<string>();
+                        //Reset fields
+                        embedField1 = new List<string>();
+                        embedField2 = new List<string>();
+                    }
+
+                    //Keep adding skins to list if it has not reached cutoff amount
+                    if (userSkinsProcessedSinceLastPage != entriesPerPage)
+                    {
+                        //Add items from embedFieldsMaster to working embedFields
+                        embedField1.Add(embedField1Master[counter]);
+                        embedField2.Add(embedField2Master[counter]);
+
+                    }
+
+                    //Increment counters
+                    userSkinsProcessedSinceLastPage++;
+                    counter++;
+
                 }
-
-                //Keep adding skins to list if it has not reached cutoff amount
-                if (userSkinsProcessedSinceLastPage != entriesPerPage)
+                catch (Exception)
                 {
-                    //Add items from embedFieldsMaster to working embedFields
-                    embedField1.Add(embedField1Master[counter]);
-                    embedField2.Add(embedField2Master[counter]);
                 }
-
-                //Increment counters
-                userSkinsProcessedSinceLastPage++;
-                counter++;
             }
 
             //Create final page to flush all remaining contents before exiting
             CreateNewPaginatorPage(embedField1, embedField2, pages, paginationConfig);
+
         }
     }
 
