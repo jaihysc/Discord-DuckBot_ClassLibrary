@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace DuckBot_ClassLibrary
@@ -9,47 +10,29 @@ namespace DuckBot_ClassLibrary
     public class CoreMethod
     {
         //This must be set prior to using the methods in this class
-        internal static string rootLocation = "";
-        internal static bool rootLocationSet = false;
-
-        public static void DeclareRootLocation(string rootLocationPath)
-        {
-            rootLocation = rootLocationPath;
-            rootLocationSet = true;
-        }
-        public static void RootLocationInvalidHandler()
-        {
-            throw new Exception("Paths file root location was not set");
-        }
-        //
+        internal static string rootLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public static List<string> ReadFromFileToList(string fileName)
         {
             List<string> returnFileInfoList = new List<string>();
 
-            if (rootLocationSet == true)
+
+            try
             {
-                try
-                {
-                    //Read root path file
-                    var fileLocations = File.ReadAllLines(rootLocation + @"\Paths.txt");
+                //Read root path file
+                var fileLocations = File.ReadAllLines(rootLocation + @"\Paths.txt");
 
-                    //Check path file for specified name of txt file
-                    //E.G "UserCredits.txt"
-                    string returnFileLocation = fileLocations.First(p => p.Contains(fileName)).ToString();
-                    foreach (var item in File.ReadAllLines(returnFileLocation))
-                    {
-                        returnFileInfoList.Add(item);
-                    }
-
-                }
-                catch (Exception)
+                //Check path file for specified name of txt file
+                //E.G "UserCredits.txt"
+                string returnFileLocation = fileLocations.First(p => p.Contains(fileName)).ToString();
+                foreach (var item in File.ReadAllLines(returnFileLocation))
                 {
+                    returnFileInfoList.Add(item);
                 }
+
             }
-            else
+            catch (Exception)
             {
-                RootLocationInvalidHandler();
             }
 
             return returnFileInfoList;
@@ -59,25 +42,18 @@ namespace DuckBot_ClassLibrary
         {
             List<string> returnFileInfoList = new List<string>();
 
-            if (rootLocationSet == true)
+            try
             {
-                try
+                //Check path file for specified name of txt file
+                //E.G "UserCredits.txt"
+                foreach (var item in File.ReadAllLines(filePath))
                 {
-                    //Check path file for specified name of txt file
-                    //E.G "UserCredits.txt"
-                    foreach (var item in File.ReadAllLines(filePath))
-                    {
-                        returnFileInfoList.Add(item);
-                    }
+                    returnFileInfoList.Add(item);
+                }
 
-                }
-                catch (Exception)
-                {
-                }
             }
-            else
+            catch (Exception)
             {
-                RootLocationInvalidHandler();
             }
 
 
@@ -87,34 +63,27 @@ namespace DuckBot_ClassLibrary
 
         public static void WriteListToFile(List<string> listToWrite, bool overwriteExistingContent, string filePath)
         {
-            if (rootLocationSet == true)
+            try
             {
-                try
+                //Overwrite existing contents if true
+                if (overwriteExistingContent == true)
                 {
-                    //Overwrite existing contents if true
-                    if (overwriteExistingContent == true)
-                    {
-                        File.WriteAllText(filePath, "");
-                    }
-
-                    //Write items from list
-                    foreach (var item in listToWrite)
-                    {
-                        using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath, true))
-                        {
-                            file.WriteLine(item);
-                        }
-                    }
-
+                    File.WriteAllText(filePath, "");
                 }
-                catch (Exception ex)
+
+                //Write items from list
+                foreach (var item in listToWrite)
                 {
-                    Console.WriteLine(ex.StackTrace);
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath, true))
+                    {
+                        file.WriteLine(item);
+                    }
                 }
+
             }
-            else
+            catch (Exception ex)
             {
-                RootLocationInvalidHandler();
+                Console.WriteLine(ex.StackTrace);
             }
 
 
@@ -122,31 +91,23 @@ namespace DuckBot_ClassLibrary
 
         public static void WriteStringToFile(string stringToWrite, bool overwriteExistingContent, string filePath)
         {
-            if (rootLocationSet == true)
+            try
             {
-
-                try
+                //Overwrite existing contents if true
+                if (overwriteExistingContent == true)
                 {
-                    //Overwrite existing contents if true
-                    if (overwriteExistingContent == true)
-                    {
-                        File.WriteAllText(filePath, "");
-                    }
-
-                    //Write string
-                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath, true))
-                    {
-                        file.WriteLine(stringToWrite);
-                    }
-
+                    File.WriteAllText(filePath, "");
                 }
-                catch (Exception)
+
+                //Write string
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath, true))
                 {
+                    file.WriteLine(stringToWrite);
                 }
+
             }
-            else
+            catch (Exception)
             {
-                RootLocationInvalidHandler();
             }
 
         }
@@ -156,24 +117,17 @@ namespace DuckBot_ClassLibrary
         {
             string returnFileLocation = "";
 
-            if (rootLocationSet == true)
+            try
             {
-                try
-                {
-                    //Read root path file
-                    var fileLocations = File.ReadAllLines(rootLocation + @"\Paths.txt");
+                //Read root path file
+                var fileLocations = File.ReadAllLines(rootLocation + @"\Paths.txt");
 
-                    //Check path file for specified name of txt file
-                    //E.G "UserCredits.txt"
-                    returnFileLocation = fileLocations.First(p => p.Contains(fileName)).ToString();
-                }
-                catch (Exception)
-                {
-                }
+                //Check path file for specified name of txt file
+                //E.G "UserCredits.txt"
+                returnFileLocation = fileLocations.First(p => p.Contains(fileName)).ToString();
             }
-            else
+            catch (Exception)
             {
-                RootLocationInvalidHandler();
             }
 
             return returnFileLocation;
