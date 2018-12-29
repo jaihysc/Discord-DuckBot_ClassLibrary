@@ -60,6 +60,23 @@ namespace DuckBot_ClassLibrary
             return returnFileInfoList;
         }
 
+        public static string ReadFromFile(string filePath)
+        {
+            try
+            {
+                using (StreamReader r = new StreamReader(filePath))
+                {
+                    return r.ReadToEnd();
+                }
+
+            }
+            catch (Exception)
+            {
+            }
+
+            return null;
+        }
+
 
         public static void WriteListToFile(List<string> listToWrite, bool overwriteExistingContent, string filePath)
         {
@@ -100,7 +117,7 @@ namespace DuckBot_ClassLibrary
                 }
 
                 //Write string
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath, true))
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath, true, Encoding.UTF8))
                 {
                     file.WriteLine(stringToWrite);
                 }
