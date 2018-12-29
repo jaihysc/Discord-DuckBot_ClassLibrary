@@ -12,33 +12,7 @@ namespace DuckBot_ClassLibrary
         //This must be set prior to using the methods in this class
         internal static string rootLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-        public static List<string> ReadFromFileToList(string fileName)
-        {
-            List<string> returnFileInfoList = new List<string>();
-
-
-            try
-            {
-                //Read root path file
-                var fileLocations = File.ReadAllLines(rootLocation + @"\Paths.txt");
-
-                //Check path file for specified name of txt file
-                //E.G "UserCredits.txt"
-                string returnFileLocation = fileLocations.First(p => p.Contains(fileName)).ToString();
-                foreach (var item in File.ReadAllLines(returnFileLocation))
-                {
-                    returnFileInfoList.Add(item);
-                }
-
-            }
-            catch (Exception)
-            {
-            }
-
-            return returnFileInfoList;
-        }
-
-        public static List<string> ReadFromFilePathToList(string filePath)
+        public static List<string> ReadFromFileToList(string filePath)
         {
             List<string> returnFileInfoList = new List<string>();
 
@@ -141,7 +115,7 @@ namespace DuckBot_ClassLibrary
 
                 //Check path file for specified name of txt file
                 //E.G "UserCredits.txt"
-                returnFileLocation = fileLocations.First(p => p.Contains(fileName)).ToString();
+                returnFileLocation = fileLocations.FirstOrDefault() + fileName;
             }
             catch (Exception)
             {
